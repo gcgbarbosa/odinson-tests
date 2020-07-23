@@ -9,4 +9,6 @@ This project provides tests regarding the usage of `odinson` starting with the `
   
 ## Tests
 
-TODO: start tests
+|__Domain__ | __Description__|
+|--------|----------------|
+|[`bio`](src/main/scala/toydomains/bio) | A very simple introduction that uses the biology domain |
