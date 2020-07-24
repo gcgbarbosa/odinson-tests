@@ -9,4 +9,6 @@ We will provide a general example using the UMBC corpus.
   
 ## Tests
 
-TODO: start tests
+|__Domain__ | __Description__|
+|--------|----------------|
+|[`bio`](src/main/scala/tests/bio) | A very simple introduction that uses the biology domain |
