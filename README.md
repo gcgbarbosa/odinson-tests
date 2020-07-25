@@ -11,4 +11,4 @@ We will provide a general example using the UMBC corpus.
 
 |__Domain__ | __Description__|
 |--------|----------------|
-|[`bio`](src/main/scala/tests/umbc) | A very simple introduction that uses a general purpose corpus |
+|[`umbc`](src/main/scala/tests/umbc) | A very simple introduction that uses a general purpose corpus |
