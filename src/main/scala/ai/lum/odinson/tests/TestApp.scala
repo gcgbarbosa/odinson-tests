@@ -32,7 +32,7 @@ object TestApp extends App {
     ncs.map(nc => getNamedCapture(nc, luceneDocId))
   }
   // 
-  println("starting odinson-tests...")
+  println("Starting odinson-tests...")
   // get the extractor engine
   val ee = ExtractorEngine.fromConfig
   val rr = ee.ruleReader

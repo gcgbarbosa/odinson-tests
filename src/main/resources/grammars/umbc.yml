@@ -1,10 +1,47 @@
 vars:
-  chunk: "[chunk=B-NP][chunk=I-NP]*"
+  chunk: "([tag=/J.*/]{,3} [tag=/N.*/]+ (of [tag=DT]? [tag=/J.*/]{,3} [tag=/N.*/]+)?)"
+  agents: "nsubj|nsubj:xsubj|nsubjpass:xsubj|csubj|csubjpass|nmod_along_with"
+  adverbial_clause: "advcl"
+  conjunctions: "appos|conj|conj_.*|cc"
+  complements: "xcomp|ccomp"
+  noun_modifiers: "amod|compound|name" #removed dep
+  negTriggers: "not"
+  objects: "dobj"
+  preps: "nmod_of|nmod_in|nmod_to|nmod_over|nmod_for|nmod_on|nmod_than|acl_of"
+  prep_dobjs: "nmod"
+  quant_modifiers: "amod|advmod"
+  passive_agents: "nmod_by|nmod_agent|agent"
+  passive_mark_verbs: "marked|defined|indicated|characterized"
+  transparent_nouns: "level|amount|quantit" # do we need these in general?
+  reasons: "cause|factor|motivation|reason"
+  report: "cite|give|mention|provide|report"
+  trigger: "caus"
+
 rules:
-  - name: testrule
+  - name: simple-active
     type: event
     pattern: |
-      trigger = [lemma=eat]
-      subject: ^NP = >nsubj ${chunk}
-      object: ^NP = >dobj ${chunk}
+      trigger = /${trigger}.*/
+      cause: ^Concept = >nsubj ${chunk}
+
+  - name: ported_syntax_1_verb-Causal
+    type: event
+    pattern: |
+      trigger = [norm=/${trigger}.*/ & tag=/V.*/] # (?! due to) todo: are lookaheads possible?
+      cause: ^Concept =
+        # optionally reverse traverse an advcl
+        </(${adverbial_clause}).*/?
+        # agents (i.e., noun subjects)
+        >/(${agents}).*/
+        # optionally you can follow specified modifiers
+        >/(nmod_than|${objects}|${conjunctions}|${noun_modifiers}|nmod_in|nmod_of).*/{,2}
+        # land in a chunk
+        ${chunk}
+      effect: ^Concept =
+        # direct objects or things like xcomp
+        >/(${objects}|${complements})/
+        # optionally you can follow specified modifiers
+        >/${noun_modifiers}|${preps}/{,2}
+        # land in a chunk
+        ${chunk}
 
