@@ -1,6 +1,7 @@
 package ai.lum.odinson.tests
 
 import ai.lum.odinson.{ExtractorEngine, Mention, NamedCapture}
+import scala.io.Source
 
 /** Queries an index with a rulefile
  *  @author gcgbarbosa
@@ -35,20 +36,9 @@ object TestApp extends App {
   // get the extractor engine
   val ee = ExtractorEngine.fromConfig
   val rr = ee.ruleReader
-  // TODO: load rule file
-  // for now, running a single basic basic rule
-  val rules = """
-    |vars:
-    |  chunk: "[chunk=B-NP][chunk=I-NP]*"
-    |
-    |rules:
-    |  - name: testrule
-    |    type: event
-    |    pattern: |
-    |      trigger = [lemma=eat]
-    |      subject: ^NP = >nsubj ${chunk}
-    |      object: ^NP = >dobj ${chunk}
-    """.stripMargin
+  // load rule file from resources
+  val rulesResource = getClass.getResourceAsStream("/grammars/umbc.yml")
+  val rules = Source.fromInputStream(rulesResource).getLines.mkString("\n")
   // compile query
   val queries = rr.compileRuleFile(rules)
   // extract mentions
