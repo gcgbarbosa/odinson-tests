@@ -2,22 +2,31 @@ package ai.lum.odinson.tests
 
 import ai.lum.odinson.{ExtractorEngine, Mention, NamedCapture}
 
+/** Queries an index with a rulefile
+ *  @author gcgbarbosa
+ */
 object TestApp extends App {
+  /** receives a [[ai.lum.odinson.Mention]] and prints its content
+   */
   def getEventRuleResults(mention: Mention): Unit =  {
+    // TODO: assert this is an EventMention
     // print trigger
     println(s"#trigger:<${ee.getString(mention.luceneDocId, mention.odinsonMatch)}>")
     // print named captures
     getNamedCapture(mention.odinsonMatch.namedCaptures, mention.luceneDocId)
   }
-  // print array of mentions 
+  /** receives a list of mentions and calls the single item function
+   */
   def getEventRuleResults(mentions: Seq[Mention]): Unit =  {
     mentions.map(m => getEventRuleResults(m))
   }
-  // print named capture info
+  /** receives a [[ai.lum.odinson.NamedCapture]] and prints its content
+   */
   def getNamedCapture(nc: NamedCapture, luceneDocId: Int): Unit =  {
     println(s"##named-capture ${nc.name}:<${ee.getString(luceneDocId, nc.capturedMatch)}>")
   }
-  // print named capture lists
+  /** receives a list of named captures and calls the single item function 
+   */
   def getNamedCapture(ncs: Seq[NamedCapture], luceneDocId: Int): Unit =  {
     ncs.map(nc => getNamedCapture(nc, luceneDocId))
   }
@@ -46,9 +55,7 @@ object TestApp extends App {
   val mentions = ee.extractMentions(queries)
   // print everything that there is
   println(s"Found ${mentions.size} mentions.")
-  // get the first match
-  // TODO: make a function to print this information
-  println(s"Printing matched info")
+  // print the information found
   getEventRuleResults(mentions)
   //
 }
