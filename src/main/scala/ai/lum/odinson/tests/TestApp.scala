@@ -1,8 +1,27 @@
 package ai.lum.odinson.tests
 
-import ai.lum.odinson.{ExtractorEngine}
+import ai.lum.odinson.{ExtractorEngine, Mention, NamedCapture}
 
 object TestApp extends App {
+  def getEventRuleResults(mention: Mention): Unit =  {
+    // print trigger
+    println(s"#trigger:<${ee.getString(mention.luceneDocId, mention.odinsonMatch)}>")
+    // print named captures
+    getNamedCapture(mention.odinsonMatch.namedCaptures, mention.luceneDocId)
+  }
+  // print array of mentions 
+  def getEventRuleResults(mentions: Seq[Mention]): Unit =  {
+    mentions.map(m => getEventRuleResults(m))
+  }
+  // print named capture info
+  def getNamedCapture(nc: NamedCapture, luceneDocId: Int): Unit =  {
+    println(s"##named-capture ${nc.name}:<${ee.getString(luceneDocId, nc.capturedMatch)}>")
+  }
+  // print named capture lists
+  def getNamedCapture(ncs: Seq[NamedCapture], luceneDocId: Int): Unit =  {
+    ncs.map(nc => getNamedCapture(nc, luceneDocId))
+  }
+  // 
   println("starting odinson-tests...")
   // get the extractor engine
   val ee = ExtractorEngine.fromConfig
@@ -28,11 +47,8 @@ object TestApp extends App {
   // print everything that there is
   println(s"Found ${mentions.size} mentions.")
   // get the first match
-  val m0 = mentions.head
-  // make a function to print this information
-  println(s"Printing info from the first match")
-  println(s"trigger: ${ ee.getString(m0.luceneDocId, m0.odinsonMatch) }")
-  val nc0 = m0.odinsonMatch.namedCaptures.head
-  println(s"named-capture <${nc0.name}>: ${ee.getString(m0.luceneDocId, nc0.capturedMatch)}")
+  // TODO: make a function to print this information
+  println(s"Printing matched info")
+  getEventRuleResults(mentions)
   //
 }
