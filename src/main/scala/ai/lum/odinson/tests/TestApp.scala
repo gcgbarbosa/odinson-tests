@@ -42,12 +42,11 @@ object TestApp extends App {
   // compile query
   val queries = rr.compileRuleFile(rules)
   // extract mentions
-  while(true) {
-    val mentions = ee.extractMentions(queries)
-    // print everything that there is
-    println(s"Found ${mentions.size} mentions.")
-    // print the information found
-    getEventRuleResults(mentions)
-  }
+  val mentions = ee.extractMentions(queries)
+  // print everything that there is
+  println(s"Found ${mentions.size} mentions.")
+  // print the information found
+  getEventRuleResults(mentions)
   //
+  // TODO: figure out how to use the state
 }
