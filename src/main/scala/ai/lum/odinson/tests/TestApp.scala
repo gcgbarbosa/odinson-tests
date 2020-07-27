@@ -31,7 +31,7 @@ object TestApp extends App {
   def getNamedCapture(ncs: Seq[NamedCapture], luceneDocId: Int): Unit =  {
     ncs.map(nc => getNamedCapture(nc, luceneDocId))
   }
-  // 
+  // TODO: run this 10k times
   println("Starting odinson-tests...")
   // get the extractor engine
   val ee = ExtractorEngine.fromConfig
@@ -43,10 +43,13 @@ object TestApp extends App {
   val queries = rr.compileRuleFile(rules)
   // extract mentions
   val mentions = ee.extractMentions(queries)
+  // print state?
+  ee.stateFactory.usingState { state =>
+    // getResultItems(docBase, docId, label)
+    // one id to be used: 562
+  }
   // print everything that there is
-  println(s"Found ${mentions.size} mentions.")
-  // print the information found
   getEventRuleResults(mentions)
-  //
+  println(s"Found <${mentions.size}> mentions")
   // TODO: figure out how to use the state
 }
