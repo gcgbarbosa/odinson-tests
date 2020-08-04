@@ -43,13 +43,18 @@ object TestApp extends App {
   val queries = rr.compileRuleFile(rules)
   // extract mentions
   val mentions = ee.extractMentions(queries)
+  // for (m <- mentions) {
+  //   if (m.label.get == "Time") {
+  //     println(m.label.get)
+  //   }
+  // }
   // print state?
-  ee.stateFactory.usingState { state =>
-    // getResultItems(docBase, docId, label)
-    // one id to be used: 562
-  }
+  // ee.stateFactory.usingState { state =>
+  //   // getResultItems(docBase, docId, label)
+  //   // one id to be used: 562
+  // }
   // print everything that there is
-  getEventRuleResults(mentions)
+  // getEventRuleResults(mentions)
   println(s"Found <${mentions.size}> mentions")
   // TODO: figure out how to use the state
 }
