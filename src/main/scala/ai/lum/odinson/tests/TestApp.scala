@@ -41,10 +41,13 @@ object TestApp extends App {
   val rules = Source.fromInputStream(rulesResource).getLines.mkString("\n")
   // compile query
   val queries = rr.compileRuleFile(rules)
-  // extract mentions
-  val mentions = ee.extractMentions(queries)
-  // TODO: Print stuff
-  // getEventRuleResults(mentions)
-  println(s"Found <${mentions.size}> mentions")
-  // TODO: figure out how to use the state
+  var i: Int = 0
+  while(true) {
+    i=i+1
+    // extract mentions
+    val mentions = ee.extractMentions(queries)
+    // TODO: Print stuff
+    // getEventRuleResults(mentions)
+    println(s"Run: <${i.toString}> Found <${mentions.size}> mentions")
+  }
 }
